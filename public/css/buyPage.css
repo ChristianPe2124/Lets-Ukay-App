@@ -1,0 +1,18 @@
+.buy-product-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: stretch;
+    gap: 30px;
+    width: 90%;
+    margin-inline: auto;
+}
+.card-text {
+    min-height: 95px;
+}
+.alert {
+    width: 400px;
+    margin-left: 20px;
+}
+.btn {
+    width: 100%;
+}
