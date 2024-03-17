@@ -25,15 +25,6 @@
     <script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
     <!-- end script DATATABLES-->
     <script>
-        // datatables
-        var $ = jQuery;
-        $(document).ready(function () {
-            $('#productTable').DataTable();
-        });
-        // modal
-        $(document).ready(function() {
-            $("#myModal").modal();
-        });
     </script>
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -108,14 +99,66 @@
         </main>
     </div>
     <script>
+        // datatables
+        var $ = jQuery;
+        $(document).ready(function () {
+            var table = $('#productTable').DataTable();
+
+            // Edit Datatables Records
+            table.on('click', '.edit', function() {
+                $tr = $(this).closest('tr');
+                if($($tr).hasClass('child')) {
+                    $tr = $tr.prev('.parent');
+                }
+
+                var data = table.row($tr).data();
+                //console.log(data);
+
+                $('#product_name').val(data[1]);
+                $('#product_desc').val(data[3]);
+                $('#product_seller').val(data[4]);
+                $('#product_status').val(data[5]);
+
+                $('#editForm').attr('action', '/admin/home/'+data[0]);
+                $('#editModal').modal('show');
+            });
+            // END OF Edit Datatables Records
+
+            // DELETE Datatables Records
+            table.on('click', '.delete', function() {
+                $tr = $(this).closest('tr');
+                if($($tr).hasClass('child')) {
+                    $tr = $tr.prev('.parent');
+                }
+
+                var data = table.row($tr).data();
+
+                $('#deleteForm').attr('action', '/admin/home/'+data[0]);
+                $('#deleteModal').modal('show');
+            });
+            // END OF DELETE Datatables Records
+        });
+
+        // modal
+        $(document).ready(function() {
+            $("#myModal").modal();
+        });
         $('#myModal').on('shown.bs.modal', function () {
             $('#myInput').trigger('focus')
         })
+        // manual closing of modal not working
+        function modal_hide(){
+                $('#editModal').modal('hide');
+                $('#deleteModal').modal('hide');
+        }
+        // end modals
+        // alert message
         $(document).ready(function(){
             $("#alert_button").click(function(){
                 $("#err_success_alert").hide(600);
             });
         });
+        // end alert message
     </script>
 </body>
 </html>

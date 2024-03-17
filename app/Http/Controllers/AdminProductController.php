@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
@@ -84,9 +86,12 @@ class AdminProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        /* if (!$id) {
+        return Redirect::back()->with('errors', 'Something went wrong!');
+        } */
+        //$edit_products = DB::table('products')->where('product_id', $request->edit_id)->get();
     }
 
     /**
@@ -98,7 +103,39 @@ class AdminProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'product_name' => ['required', 'max:255'],
+            'product_desc' => ['required', 'max:255'],
+            'product_seller' => ['required', 'max:255'],
+            'product_status' => ['required', 'in:active,decline'],
+        ]);
+
+        // Input sent from Add ITEM
+        $product = Product::find($id);
+        $product->product_name = $request->product_name;
+        $product->product_desc = $request->product_desc;
+        $product->seller_name = $request->product_seller;
+        $product->status = $request->product_status;
+
+        // Image upload and File Path for Storage
+        if ($request->hasFile('src')) {
+            $destination = 'storage/product_image' . $product->image;
+            if (File::exists($destination)) {
+                File::delete($destination);
+            }
+            $file = $request->file('src');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $ext;
+            $file->move('storage/product_image', $filename);
+            $product->src = $filename;
+        }
+
+        $product->update();
+
+        if (!$product) {
+            return redirect()->route('admin.home')->with('errors', 'All fields are required');
+        }
+        return redirect()->route('admin.home')->with('success', 'Successfully Updated');
     }
 
     /**
@@ -109,6 +146,10 @@ class AdminProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $image_path = public_path('storage/product_image') . '/' . $product->src;
+        unlink($image_path);
+        $product->delete();
+        return redirect()->route('admin.home')->with('success', "Delete successfully!");
     }
 }
