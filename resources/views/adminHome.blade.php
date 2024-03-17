@@ -21,58 +21,73 @@
     </div>
 </div> -->
 <div class="table-responsive-xl container">
-    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  ADD ITEM
-</button>
+    @if($errors->any())
+        <div class="alert alert-success product_error_success_alert" role="alert" id="err_success_alert">
+            @foreach($errors->all() as $error)
+                {{ $error }}
+            @endforeach
+            <button type="button" class="btn-close" id="alert_button" aria-label="Close"></button>
+        </div>
+    @endif
+    @if(session('success'))
+        <div class="alert alert-success product_error_success_alert" role="alert" id="err_success_alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" id="alert_button" aria-label="Close"></button>
+        </div>
+    @endif
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">ADD NEW ITEM</h5>
-        <button style="border: none; outline:none; background:transparent; font-size: 30px" type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="post">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    ADD ITEM
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">ADD NEW ITEM</h5>
+            <button style="border: none; outline:none; background:transparent; font-size: 30px" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="modal-body">
             @csrf
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Name</label>
-                <input type="text" name="product_name" class="form-control" id="exampleFormControlInput1" placeholder="Name of the item">
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" name="product_name" required class="form-control" placeholder="Name of the item">
+                    </div>
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <input type="text" name="product_desc" required class="form-control" placeholder="Description">
+                    </div>
+                    <div class="mb-3">
+                        <label>Seller</label>
+                        <input type="text" name="product_seller" required class="form-control" placeholder="Seller name">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">Status</label>
+                        </div>
+                        <select name="product_status" class="col-md-10 custom-select">
+                            <option value="active" selected >Active</option>
+                            <option value="decline">Decline</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Default file input example</label>
+                        <input name="src" class="form-control" type="file" id="formFile">
+                    </div>
             </div>
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Description</label>
-                <input type="text" name="product_desc" class="form-control" id="exampleFormControlInput1" placeholder="Description">
-            </div>
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Seller</label>
-                <input type="text" name="product_seller" class="form-control" id="exampleFormControlInput1" placeholder="Seller name">
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Status</label>
-                </div>
-                <select name="product_status" class="col-md-10 custom-select" id="inputGroupSelect01">
-                    <option value="active" selected >Active</option>
-                    <option value="decline">Decline</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Default file input example</label>
-                <input class="form-control" type="file" id="formFile">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add</button>
             </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </div>
+        </div>
     </div>
-  </div>
-</div>
+    </div>
     <!-- end modal -->
     <table class="table table-bordered table-striped table-hover" id="productTable">
         <thead class="table-dark">
@@ -86,61 +101,21 @@
             </tr>
         </thead>
         <tbody class="page-data">
+            @foreach($products as $item)
             <tr>
-                <td>Micheal 5 360</td>
-                <td>Photo here 50px</td>
-                <td>One of the best version of Jordan Collections</td>
-                <td>Christian Pe</td>
-                <td>Decline</td>
+                <td>{{ $item->product_name }}</td>
+                <td style="text-align: center; object-fit:fill;">
+                    <img src="{{ asset('storage/product_image/' .$item->src) }}" loading="lazy" width="70px" height="70px" alt="">
+                </td>
+                <td>{{ $item->product_desc }}</td>
+                <td>{{ $item->seller_name }}</td>
+                <td>{{ $item->status }}</td>
                 <td style="text-align: center;">
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>
-            <tr>
-                <td>Jordan 5 360</td>
-                <td>Photo here 50px</td>
-                <td>One of the best version of Jordan Collections</td>
-                <td>Christian Pe</td>
-                <td>Active</td>
-                <td style="text-align: center;">
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            </tr>
-            <tr>
-                <td>Jordan 5 360</td>
-                <td>Photo here 50px</td>
-                <td>One of the best version of Jordan Collections</td>
-                <td>Christian Pe</td>
-                <td>Active</td>
-                <td style="text-align: center;">
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            </tr>
-            <tr>
-                <td>Jordan 5 360</td>
-                <td>Photo here 50px</td>
-                <td>One of the best version of Jordan Collections</td>
-                <td>Christian Pe</td>
-                <td>Active</td>
-                <td style="text-align: center;">
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            </tr>
-            <tr>
-                <td>Jordan 5 360</td>
-                <td>Photo here 50px</td>
-                <td>One of the best version of Jordan Collections</td>
-                <td>Christian Pe</td>
-                <td>Active</td>
-                <td style="text-align: center;">
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            </tr>
+            @endforeach
         </tbody>
     </table>
 </div>

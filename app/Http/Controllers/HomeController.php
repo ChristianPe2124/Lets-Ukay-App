@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 class HomeController extends Controller
 {
     /**
@@ -25,6 +27,7 @@ class HomeController extends Controller
     }
     public function adminHome()
     {
-        return view('adminHome');
+        $products = DB::table('products')->get();
+        return view('adminHome', compact('products'));
     }
 }

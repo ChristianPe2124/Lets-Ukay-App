@@ -1,0 +1,6 @@
+.product_error_success_alert {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

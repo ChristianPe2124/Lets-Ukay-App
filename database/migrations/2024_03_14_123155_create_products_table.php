@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('product_desc');
             $table->string('src');
-            $table->foreignId('seller_id')->nullable();
+            $table->string('seller_name');
             $table->foreignId('buyer_id')->nullable();
             $table->string('status');
             $table->timestamps();
