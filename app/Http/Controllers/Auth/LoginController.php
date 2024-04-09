@@ -36,6 +36,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        return redirect(route('welcome'));
     }
     public function login(Request $request)
     {
@@ -48,10 +49,13 @@ class LoginController extends Controller
             if (auth()->user()->is_admin == 1) {
                 return redirect()->route('admin.home');
             } else {
-                return redirect()->route('home');
+                $name = Auth()->user()->name;
+                $parts = explode(' ', $name);
+                $firstName = $parts[0];
+                return view('welcome', compact('firstName'));
             }
         } else {
-            return redirect()->route('login')->with('login_error', 'Please Input valid e-mail & password.');
+            return redirect()->route('login')->with('status', 'Please Input valid e-mail & password.');
         }
     }
 }

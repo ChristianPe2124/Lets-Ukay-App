@@ -1,0 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Style+Script&display=swap");
+
+body {
+    font-family: cursive;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 30px;
+    color: #585858;
+}
+/* notification badge */
+.notification {
+    color: white;
+    text-decoration: none;
+    padding: 0 10px;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+}
+.notification .badge {
+    position: absolute;
+    top: -2px;
+    right: -15px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+}
+/* end notification badge */
+#header {
+    background-color: #f291bf;
+    /* overflow: hidden; */
+}
+nav .navbar > ul > li {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.navbar {
+    padding: 15px 0;
+}
+
+.nav-item {
+    font-family: "Poppins";
+    font-size: 30px;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+h2.logo {
+    font-family: "Style Script";
+    font-size: 60px;
+    font-weight: 400;
+    color: #fff;
+}
+
+h2.center-logo {
+    margin: 0 25px;
+}
+#navbarSupportedContent {
+    justify-content: center;
+    min-height: 80px;
+}
+/* #navbarSupportedContent > ul > li > a {
+    margin: 0 20px;
+} */
+ul.navbar-nav li.nav-item {
+    margin-right: 1rem;
+}
+ul.navbar-nav li.nav-item:last-child {
+    margin-right: 0;
+}
+ul.navbar-nav li.nav-item a.nav-link {
+    color: #fff;
+    margin: 0 0.625rem;
+}
+.navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .show > .nav-link {
+    color: black;
+    font-size: 1rem;
+}
+ul.navbar-nav li.nav-item a.nav-link:hover {
+    color: black;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    :root {
+        scroll-behavior: smooth;
+    }
+}
+
+.first_Content {
+    font-family: "Poppins";
+
+    & .title_Header {
+        font-size: 900;
+        margin-left: 10px;
+        text-align: center;
+        margin-top: 150px;
+    }
+
+    & span {
+        font-style: oblique;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    & .btn_Start {
+        color: black;
+        font-weight: 300;
+        font-size: 30px;
+        border-radius: 50px;
+        border: 3px solid #f291bf;
+        padding: 5px 20px;
+        cursor: pointer;
+        margin-top: 50px;
+    }
+}
+
+.btn_Start:hover {
+    background-color: #f291bf;
+    color: white;
+}
+
+/**About*/
+.second_About {
+    font-family: "Poppins";
+
+    & img {
+        margin-bottom: 10px;
+    }
+}
+
+/*Donate*/
+.donate_Content {
+    font-family: "Baskerville";
+
+    & .title_Donate {
+        font-size: 900;
+        text-align: center;
+        margin-top: 100px;
+    }
+
+    & .btn_Read {
+        color: black;
+        font-weight: 300;
+        font-size: 30px;
+        cursor: pointer;
+    }
+}
+
+.btn_Read:hover {
+    color: #f291bf;
+}
+
+/*Sample Items*/
+
+.sample_Items {
+    font-family: "Poppins";
+    justify-content: center;
+}
+
+footer {
+    background-color: #f291bf;
+}

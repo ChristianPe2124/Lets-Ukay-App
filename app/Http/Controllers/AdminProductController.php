@@ -22,7 +22,9 @@ class AdminProductController extends Controller
             'product_name' => ['required', 'max:255'],
             'product_desc' => ['required', 'max:255'],
             'product_seller' => ['required', 'max:255'],
-            'product_status' => ['required', 'in:active,decline'],
+            'product_price' => ['required', 'numeric', 'min:1', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'product_category' => ['required', 'in:skirt,short,blouse,dress,coat,swimwear,shirt,suit,formal,footwear'],
+            'product_status' => ['required', 'in:instock,outofstock'],
         ]);
 
         // Input sent from Add ITEM
@@ -30,6 +32,8 @@ class AdminProductController extends Controller
         $product->product_name = $request->product_name;
         $product->product_desc = $request->product_desc;
         $product->seller_name = $request->product_seller;
+        $product->price = $request->product_price;
+        $product->category = $request->product_category;
         $product->status = $request->product_status;
         // Image upload and File Path for Storage
         if ($request->hasFile('src')) {
@@ -40,6 +44,7 @@ class AdminProductController extends Controller
             $product->src = $filename;
         }
 
+        //dd($product);
         $product->save();
 
         if (!$product) {
@@ -74,7 +79,9 @@ class AdminProductController extends Controller
             'product_name' => ['required', 'max:255'],
             'product_desc' => ['required', 'max:255'],
             'product_seller' => ['required', 'max:255'],
-            'product_status' => ['required', 'in:active,decline'],
+            'product_price' => ['required', 'numeric', 'min:1', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'product_category' => ['required', 'in:skirt,short,blouse,dress,coat,swimwear,shirt,suit,formal,footwear'],
+            'product_status' => ['required', 'in:instock,outofstock'],
         ]);
 
         // Input sent from Add ITEM
@@ -82,6 +89,8 @@ class AdminProductController extends Controller
         $product->product_name = $request->product_name;
         $product->product_desc = $request->product_desc;
         $product->seller_name = $request->product_seller;
+        $product->price = $request->product_price;
+        $product->category = $request->product_category;
         $product->status = $request->product_status;
 
         // Image upload and File Path for Storage
@@ -96,7 +105,7 @@ class AdminProductController extends Controller
             $file->move('storage/product_image', $filename);
             $product->src = $filename;
         }
-
+        // dd($product);
         $product->update();
 
         if (!$product) {
@@ -114,6 +123,9 @@ class AdminProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
+        if ($product->status === "pending") {
+            return redirect()->route('admin.home')->with('error', "You can't delete pending products!");
+        }
         $image_path = public_path('storage/product_image') . '/' . $product->src;
         unlink($image_path);
         $product->delete();

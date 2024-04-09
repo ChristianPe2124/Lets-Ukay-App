@@ -36,6 +36,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger product_error_success_alert" role="alert" id="err_success_alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" id="alert_button" aria-label="Close"></button>
+        </div>
+    @endif
     <!-- ADD Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
         ADD ITEM
@@ -54,6 +60,23 @@
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="modal-body">
             @csrf
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">Category</label>
+                        </div>
+                        <select name="product_category" class="col-md-9 custom-select">
+                            <option value="skirt" selected >Skirt</option>
+                            <option value="short" selected >Short</option>
+                            <option value="blouse" selected >Blouse</option>
+                            <option value="dress" selected >Dress</option>
+                            <option value="coat" selected >Coat</option>
+                            <option value="swimwear" selected >Swimwear</option>
+                            <option value="shirt" selected >Shirt</option>
+                            <option value="suit">Suit</option>
+                            <option value="formal">Formal</option>
+                            <option value="footwear">Footwear</option>
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label>Name</label>
                         <input value="" type="text" name="product_name" required class="form-control" placeholder="Name of the item">
@@ -66,13 +89,17 @@
                         <label>Seller</label>
                         <input type="text" name="product_seller" required class="form-control" placeholder="Seller name">
                     </div>
+                    <div class="mb-3">
+                        <label>Price</label>
+                        <input type="text" name="product_price" required class="form-control" placeholder="Price">
+                    </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text">Status</label>
                         </div>
                         <select name="product_status" class="col-md-10 custom-select">
-                            <option value="active" selected >Active</option>
-                            <option value="decline">Decline</option>
+                            <option value="instock" selected >In-Stock</option>
+                            <option value="outofstock">Out of Stock</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -104,6 +131,23 @@
             <div class="modal-body">
             @csrf
             @method('PUT')
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text">Category</label>
+                    </div>
+                    <select name="product_category" id="product_category" class="col-md-9 custom-select">
+                        <option value="skirt" selected >Skirt</option>
+                        <option value="short" selected >Short</option>
+                        <option value="blouse" selected >Blouse</option>
+                        <option value="dress" selected >Dress</option>
+                        <option value="coat" selected >Coat</option>
+                        <option value="swimwear" selected >Swimwear</option>
+                        <option value="shirt" selected >Shirt</option>
+                        <option value="suit">Suit</option>
+                        <option value="formal">Formal</option>
+                        <option value="footwear">Footwear</option>
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label>Name</label>
                     <input value="" type="text" name="product_name" id="product_name" required class="form-control" placeholder="Name of the item">
@@ -116,13 +160,18 @@
                     <label>Seller</label>
                     <input type="text" name="product_seller" id="product_seller" required class="form-control" placeholder="Seller name">
                 </div>
+                <div class="mb-3">
+                    <label>Price</label>
+                    <input type="text" name="product_price" id="product_price" required class="form-control" placeholder="Price">
+                </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <label class="input-group-text">Status</label>
                     </div>
                     <select name="product_status" id="product_status" class="col-md-10 custom-select">
-                        <option value="active" selected >Active</option>
-                        <option value="decline">Decline</option>
+                        <option value="instock" selected >In-Stock</option>
+                        <option value="outofstock">Out of Stock</option>
+                        <option value="pending">Pending</option>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -132,7 +181,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="modal_hide()" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary" id="updateBtn">Update</button>
             </div>
         </form>
         </div>
@@ -178,6 +227,8 @@
                 <th scope="col">Photo</th>
                 <th scope="col">Description</th>
                 <th scope="col">Seller</th>
+                <th scope="col">Price</th>
+                <th scope="col">Category</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
@@ -192,14 +243,25 @@
                 </td>
                 <td>{{ $item->product_desc }}</td>
                 <td>{{ $item->seller_name }}</td>
+                <td>{{ $item->price }}</td>
+                <td>{{ $item->category }}</td>
                 <td>{{ $item->status }}</td>
                 <td style="text-align: center;">
+                    @if($item->status === "pending" || $item->status === "Processing")
+                    <button type="button" class="btn btn-primary edit" disabled>
+                            <i class="fa-solid fa-pen-to-square" style="color: #fff;"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger delete" disabled>
+                            <i class="fa-solid fa-trash" style="color: #fff;"></i>
+                    </button>
+                    @else
                     <button type="button" class="btn btn-primary edit">
                             <i class="fa-solid fa-pen-to-square" style="color: #fff;"></i>
                     </button>
                     <button type="button" class="btn btn-danger delete">
                             <i class="fa-solid fa-trash" style="color: #fff;"></i>
                     </button>
+                    @endif
                 </td>
             </tr>
             @endforeach

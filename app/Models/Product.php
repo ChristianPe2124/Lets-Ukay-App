@@ -16,7 +16,8 @@ class Product extends Model
         'product_desc',
         'src',
         'seller_name',
-        'buyer_id',
         'status',
+        'buyer_id',
+        'category',
     ];
 }

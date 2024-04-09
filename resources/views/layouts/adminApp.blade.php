@@ -26,6 +26,9 @@
     <!-- end script DATATABLES-->
     <script>
     </script>
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
 
@@ -36,8 +39,9 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ route('admin.home') }}">
+                    <!-- {{ config('app.name', 'Laravel') }} -->
+                    Admin Dashboard
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -73,7 +77,7 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ $firstName }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -117,7 +121,9 @@
                 $('#product_name').val(data[1]);
                 $('#product_desc').val(data[3]);
                 $('#product_seller').val(data[4]);
-                $('#product_status').val(data[5]);
+                $('#product_price').val(data[5]);
+                $('#product_category').val(data[6]);
+                $('#product_status').val(data[7]);
 
                 $('#editForm').attr('action', '/admin/home/'+data[0]);
                 $('#editModal').modal('show');
@@ -153,6 +159,7 @@
         }
         // end modals
         // alert message
+        $('#err_success_alert').fadeOut(3000);
         $(document).ready(function(){
             $("#alert_button").click(function(){
                 $("#err_success_alert").hide(600);
