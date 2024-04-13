@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderDelivered;
+use App\Mail\OrderRequest;
 use App\Models\Cart;
 use App\Models\OrderDetails;
 use App\Models\Product;
@@ -11,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -180,7 +183,17 @@ class CartController extends Controller
             $cart = Cart::where('user_id', $id)->get();
             $OrderDetails = OrderDetails::where('user_id', $id)->get();
             $requestProducts = RequestProducts::where('user_id', $id)->get();
-            // dd($requestProducts);
+
+            $sender = Auth()->user()->email;
+            $toEmail = "shielape14@gmail.com";
+            $message = "Thank you for your purchase! " . ucfirst(trans($firstName)) . ", " . ucfirst(trans($sender)) .
+                " Your order will be shipped within [length of shipping] days";
+            $subject = "Client Order Request";
+
+            $response = Mail::to($toEmail)->send(new OrderRequest($message, $subject, $sender));
+
+            // dd($response);
+
             if (count($cart) === 0) {
                 return redirect()->route('cart')->with('error', 'Please place some order!');
             } else {
@@ -241,10 +254,18 @@ class CartController extends Controller
             $id = Auth()->user()->id;
 
             $orderDetails = OrderDetails::where('user_id', $id)->where('created_at', $date)->get();
+            $transaction = TransactionRecord::where('user_id', $id)->where('created_at', $date)->get();
+
+            $toEmail = Auth()->user()->email;
+            $message = "Hello, " . ucfirst(trans(Auth()->user()->name));
+            $subject = "Order Delivered";
+
+            $response = Mail::to($toEmail)->send(new OrderDelivered($message, $subject));
+            // dd($response, $toEmail);
+
             $orderDetails->each->update(array(
                 'status' => "Delivered",
             ));
-            $transaction = TransactionRecord::where('user_id', $id)->where('created_at', $date)->get();
             $transaction->each->update(array(
                 'status' => "Delivered",
 

@@ -28,7 +28,6 @@ class MailController extends Controller
         $request->validate([
             'email' => ['required', 'email'],
         ]);
-
         $toEmail = $request->email;
         $message = "
                     Welcome ka-Ukay!, Congratulations for joining our platform.

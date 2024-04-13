@@ -21,6 +21,10 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         />
 
+    <!-- website logo -->
+    <link rel="website icon" type="png" href="{{ asset('images/logo111.png') }}">
+    <!-- website logo -->
+
     <!-- Scripts -->
     <!-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) -->
 </head>

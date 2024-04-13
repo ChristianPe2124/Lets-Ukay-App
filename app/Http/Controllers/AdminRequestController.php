@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderShipped;
 use App\Models\OrderDetails;
 use App\Models\RequestProducts;
 use App\Models\TransactionRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class AdminRequestController extends Controller
 {
@@ -71,7 +73,21 @@ class AdminRequestController extends Controller
             $created_at = $request->created_at;
             $id = (int) $request->user_id;
 
+            $name = Auth()->user()->name;
+            $parts = explode(' ', $name);
+            $firstName = $parts[0];
+
             $requestCreate = RequestProducts::where('user_id', $id)->where('created_at', $created_at)->get();
+
+            // $toEmail = "christianpe2124@gmail.com";
+            $toEmail = $requestCreate[0]['email'];
+            $message = "Thank you " . ucfirst(trans($requestCreate[0]['name'])) . " for placing an order.";
+            $subject = "Order Shipped";
+
+            $response = Mail::to($toEmail)->send(new OrderShipped($message, $subject));
+
+            // dd($response);
+
             for ($i = 0; $i < count($requestCreate); $i++) {
                 TransactionRecord::firstOrCreate([
                     'name' => $requestCreate[$i]['name'],
