@@ -17,5 +17,6 @@ class TransactionRecord extends Model
         'status',
         'user_id',
         'price',
+        'created_at',
     ];
 }

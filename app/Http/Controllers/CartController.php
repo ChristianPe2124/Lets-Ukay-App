@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\RequestProducts;
+use App\Models\TransactionRecord;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -228,6 +229,28 @@ class CartController extends Controller
 
                 return redirect()->route('cart')->with('success', 'Successfully Ordered!');
             }
+        }
+        return view('auth.login');
+    }
+
+    public function orderDelivered(Request $request)
+    {
+        if (Auth::check()) {
+
+            $date = $request->created_at;
+            $id = Auth()->user()->id;
+
+            $orderDetails = OrderDetails::where('user_id', $id)->where('created_at', $date)->get();
+            $orderDetails->each->update(array(
+                'status' => "Delivered",
+            ));
+            $transaction = TransactionRecord::where('user_id', $id)->where('created_at', $date)->get();
+            $transaction->each->update(array(
+                'status' => "Delivered",
+
+            ));
+
+            return redirect()->route('orders')->with('success', 'Successfully Received');
         }
         return view('auth.login');
     }

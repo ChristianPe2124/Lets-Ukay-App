@@ -18,7 +18,7 @@
                   @if(empty($status[0]['status']))
                     <p class="small text-muted mb-0">Status : N/A</p>
                   @else
-                    <p class="small text-muted mb-0">Status : {{ $status[0]['status'] }}</p>
+                    <strong class="small text-muted mb-0">Status : {{ $status[0]['status'] }}</strong>
                   @endif
                 </div>
                 <!-- Cards Item-->
@@ -86,7 +86,15 @@
               <!-- Card Footer -->
               <div class="card-footer border-0 px-4 py-5 d-flex justify-content-between align-items-center"
                     style="background-color: #a8729a;">
-                <button class="btn btn-primary col-3">Received</button>
+                @if($OrderDetails[0]['status'] == "Shipped")
+                <form action="{{ route('orderDelivered') }}" method="post" class="col-3">
+                  @csrf
+                  <input type="hidden" name="created_at" value="{{ $OrderDetails[0]['created_at'] }}">
+                  <button type="submit" class="btn btn-primary col-12">Received</button>
+                </form>
+                @else
+                  <span>&nbsp;</span>
+                @endif
                 <h5 class="d-flex align-items-center
                             justify-content-end text-white
                             text-uppercase mb-0">Total paid: <span class="h2 mb-0 ms-2">₱{{ number_format($delivery_price, 2) }}</span>

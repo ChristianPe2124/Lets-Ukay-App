@@ -31,6 +31,8 @@ Route::delete('/DeleteAllSelected', [CartController::class, 'destroyAllSelected'
 Route::get('/my-orders', [CartController::class, 'myOrders'])->name('orders');
 Route::get('/order-details/{id}/{created_at}', [CartController::class, 'orderDetails']);
 Route::post('/order-details', [CartController::class, 'orderDetailsCreate'])->name('order-details.post');
+// #User Order Delivered
+Route::post('/my-order', [CartController::class, 'orderDelivered'])->name('orderDelivered');
 // # Sell
 Route::get('/sell', [MailController::class, 'sellPage'])->name('sell');
 Route::post('/sell', [MailController::class, 'sellMail'])->name('sell.post');

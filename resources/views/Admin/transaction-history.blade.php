@@ -45,6 +45,13 @@
             @endforelse
         </tbody>
     </table>
+
+    <div class="text-end">
+        <a href="{{ url()->previous() }}" class="btn btn-primary">
+        <i class="fa-solid fa-arrow-left"></i>
+            Go Back
+        </a>
+    </div>
 </div>
 
 @endsection
