@@ -9,8 +9,8 @@
                 <div class="card-header">
                     <h2>My Orders</h2>
                 </div>
-                <div class="card-body">
-                    <table class="table table-bordered">
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered" style="table-layout:auto;overflow-x:auto;">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -30,8 +30,11 @@
                                     <!-- <td>{{ $item->status == '0' ? 'Processing' : 'Completed'}}</td> -->
                                     <td>{{ $item->status}}</td>
                                     <td>{{ $item->total}}</td>
-                                    <td>
-                                        <a href="{{ url('order-details/'. $item->user_id.'/'. $item->created_at) }}" class="btn btn-primary">View</a>
+                                    <td class="col-2">
+                                        <a href="{{ url('order-details/'. $item->user_id.'/'. $item->created_at) }}" class="btn btn-primary">
+                                            <i class="fa-solid fa-eye"></i>
+                                            &nbsp; View
+                                        </a>
                                     </td>
                                 </tr>
                             @empty

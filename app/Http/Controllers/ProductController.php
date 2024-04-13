@@ -26,7 +26,7 @@ class ProductController extends Controller
             $firstName = $parts[0];
 
             $cart_order = Cart::where('user_id', $user->id)->get();
-            return view('user.buy', compact('buy_products', 'productCount', 'cart_order', 'firstName'));
+            return view('user.Shopping.buy', compact('buy_products', 'productCount', 'cart_order', 'firstName'));
         }
         return view('auth.login');
     }

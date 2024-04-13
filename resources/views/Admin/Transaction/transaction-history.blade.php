@@ -19,25 +19,22 @@
         <thead class="table-dark">
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Quantity</th>
+                <th scope="col">Image</th>
+                <th scope="col">Price</th>
                 <th scope="col">Status</th>
-                <th scope="col">Action</th>
+                <th scope="col">Date</th>
             </tr>
         </thead>
         <tbody class="page-data">
             @forelse($transaction as $item)
                 <tr">
                     <td>{{ $item->name }}</td>
-                    <td>{{ $item->email }}</td>
-                    <td>{{ $item->quantity }}</td>
-                    <td>{{ $item->status }}</td>
-                    <td class="d-flex justify-content-center align-items-center">
-                        <a href=" {{ url('transaction-view'. '/' . $item->user_id . '/' . $item->created_at  ) }} " class="btn btn-primary">
-                            <i class="fa-solid fa-eye"></i>
-                            &nbsp; View
-                        </a>
+                    <td style="text-align: center; object-fit:fill;">
+                        <img src="{{ asset('storage/product_image/' .$item->src) }}" loading="lazy" width="70px" height="70px" alt="">
                     </td>
+                    <td>{{ $item->price }}</td>
+                    <td>{{ $item->status }}</td>
+                    <td>{{ $item->updated_at->format('m/d/y') }}</td>
                 </tr>
             @empty
                 <tr">
@@ -50,6 +47,13 @@
             @endforelse
         </tbody>
     </table>
+
+    <div class="text-end">
+        <a href="{{ url()->previous() }}" class="btn btn-primary">
+        <i class="fa-solid fa-arrow-left"></i>
+            Go Back
+        </a>
+    </div>
 </div>
 
 @endsection

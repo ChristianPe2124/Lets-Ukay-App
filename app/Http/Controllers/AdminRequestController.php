@@ -28,7 +28,7 @@ class AdminRequestController extends Controller
                 ->where('status', 'Processing')
                 ->select(DB::raw('count(user_id) as quantity', ), 'name', 'email', 'status', 'user_id')
                 ->get();
-            return view('admin.request', compact('order_product', 'firstName'));
+            return view('admin.Request.request', compact('order_product', 'firstName'));
         }
         return view('auth.login');
     }
@@ -42,7 +42,7 @@ class AdminRequestController extends Controller
 
             $requestProcess = RequestProducts::where('user_id', $id)->where('created_at', $created_at)->get();
 
-            return view('admin.request-process', compact('requestProcess', 'firstName'));
+            return view('admin.Request.request-process', compact('requestProcess', 'firstName'));
         }
         return view('auth.login');
     }
@@ -60,7 +60,7 @@ class AdminRequestController extends Controller
                 ->groupBy('created_at')
                 ->select(DB::raw('count(user_id) as quantity', ), 'name', 'email', 'status', 'user_id', 'created_at')
                 ->get();
-            return view('admin.request-view', compact('OrderDetails', 'clientID', 'firstName'));
+            return view('admin.Request.request-view', compact('OrderDetails', 'clientID', 'firstName'));
         }
         return view('auth.login');
     }
@@ -111,7 +111,7 @@ class AdminRequestController extends Controller
                 ->select(DB::raw('count(user_id) as quantity'), 'name', 'email', 'status', 'created_at', 'user_id')
                 ->get();
 
-            return view('admin.transaction', compact('transaction', 'firstName'));
+            return view('admin.Transaction.transaction', compact('transaction', 'firstName'));
         }
         return view('auth.login');
     }
@@ -129,7 +129,7 @@ class AdminRequestController extends Controller
                     DB::raw('SUM(price) as price'), 'name', 'email', 'status', 'created_at', 'user_id')
                 ->get();
 
-            return view('admin.transaction-view', compact('transaction', 'firstName'));
+            return view('admin.Transaction.transaction-view', compact('transaction', 'firstName'));
         }
         return view('auth.login');
     }
@@ -144,7 +144,7 @@ class AdminRequestController extends Controller
             $transaction = TransactionRecord::where('user_id', $id)->where('created_at', $created_at)
                 ->get();
 
-            return view('admin.transaction-history', compact('transaction', 'firstName'));
+            return view('admin.Transaction.transaction-history', compact('transaction', 'firstName'));
         }
         return view('auth.login');
     }

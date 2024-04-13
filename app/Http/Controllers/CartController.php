@@ -34,7 +34,7 @@ class CartController extends Controller
             $price_summary = Cart::where('user_id', $user->id)->sum('price');
             $cart_order_count = Cart::where('user_id', $user->id)->get();
             $cart_order = Cart::where('user_id', $user->id)->paginate(5);
-            return view('user.cart', compact('cart_order', 'cart_order_count', 'user', 'firstName', 'price_summary'));
+            return view('user.Shopping.cart', compact('cart_order', 'cart_order_count', 'user', 'firstName', 'price_summary'));
         }
         return view('auth.login');
     }
@@ -135,7 +135,7 @@ class CartController extends Controller
                 ->where('user_id', Auth::id())
                 ->groupBy('created_at')
                 ->paginate(10);
-            return view('user.orders', compact('orders', 'firstName'));
+            return view('user.Shopping.orders', compact('orders', 'firstName'));
         }
         return view('auth.login');
     }
@@ -155,7 +155,7 @@ class CartController extends Controller
             $OrderDetails = OrderDetails::where('user_id', $id)->where('created_at', $created_at)->get();
             $cart_order = Cart::where('user_id', $user->id)->get();
 
-            return view('user.order-details',
+            return view('user.Shopping.order-details',
                 compact('user', 'cart_order', 'OrderDetails', 'firstName',
                     'price_summary', 'delivery_price', 'status'));
         }

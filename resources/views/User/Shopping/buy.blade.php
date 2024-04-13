@@ -49,20 +49,21 @@
           <div class="col-lg-3 sticky-top sticky-offset pt-2 vh-100 overflow-auto">
             <!-- Toggle button -->
             <button
-              class="btn btn-outline-secondary mb-3 w-100 d-lg-none"
-              type="button"
-              data-mdb-toggle="collapse"
-              data-mdb-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span>Show filter</span>
-            </button>
+                  class="btn btn-outline-secondary mb-3 w-100 d-lg-none"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#slideNavbar"
+                  aria-controls="slideNavbar"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                  >
+            <!-- class="navbar-toggler navbar_toggle" -->
+                  <span>Show Filter</span>
+                </button>
             <!-- Collapsible wrapper -->
             <div
-              class="collapse card d-lg-block mb-5"
-              id="navbarSupportedContent"
+              class="collapse navbar-collapse card d-lg-block mb-5"
+              id="slideNavbar"
             >
               <div class="accordion" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
@@ -160,12 +161,17 @@
                           </div>
                         </div>
                       </div>
-                      <button
-                        type="button"
+                      <a
+                        href="#"
                         class="btn btn-white w-100 border border-secondary"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#slideNavbar"
+                        aria-controls="slideNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
                       >
                         apply
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -231,7 +237,7 @@
                         <form action="{{ route('cart.post', $item->product_id) }}" method="POST">
                         @csrf
                             <input type="submit" value="Mine" class="btn btn-primary shadow-0">
-                           
+
                             </div>
                         </form>
                       </div>
