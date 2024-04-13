@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
 use App\Models\OrderDetails;
 use App\Models\RequestProducts;
+use App\Models\TransactionRecord;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,35 +26,58 @@ class AdminRequestController extends Controller
             $firstName = $parts[0];
 
             $order_product = RequestProducts::groupBy(DB::raw('user_id'))
+                ->where('status', 'Processing')
                 ->select(DB::raw('count(user_id) as quantity', ), 'name', 'email', 'status', 'user_id')
                 ->get();
-            return view('request', compact('order_product', 'firstName'));
+            return view('admin.request', compact('order_product', 'firstName'));
         }
-        return view('login');
+        return view('auth.login');
     }
-    public function requestCreate()
+    public function request_process($id, $created_at)
     {
         if (Auth::check()) {
 
-            $cart_order = Cart::where('user_id', Auth::User()->id)->get(['name', 'email', 'status', 'src', 'productID']);
-            $order_product = RequestProducts::where('user_id', Auth::user()->id)->get();
+            $name = Auth()->user()->name;
+            $parts = explode(' ', $name);
+            $firstName = $parts[0];
 
-            if ($order_product) {
-                $order_product->each->delete();
-            }
-            for ($i = 0; $i < count($cart_order); $i++) {
-                RequestProducts::firstOrCreate([
-                    'name' => $cart_order[$i]['name'],
-                    'email' => $cart_order[$i]['email'],
-                    'status' => $cart_order[$i]['status'],
-                    'src' => $cart_order[$i]['src'],
-                    'product_id' => $cart_order[$i]['productID'],
-                    'user_id' => Auth::user()->id,
+            $requestProcess = RequestProducts::where('user_id', $id)->where('created_at', $created_at)->get();
+
+            return view('admin.request-process', compact('requestProcess', 'firstName'));
+        }
+        return view('auth.login');
+    }
+    public function requestCreate(Request $request)
+    {
+        if (Auth::check()) {
+
+            $created_at = $request->created_at;
+            $id = (int) $request->user_id;
+
+            $requestCreate = RequestProducts::where('user_id', $id)->where('created_at', $created_at)->get();
+            for ($i = 0; $i < count($requestCreate); $i++) {
+                TransactionRecord::firstOrCreate([
+                    'name' => $requestCreate[$i]['name'],
+                    'email' => $requestCreate[$i]['email'],
+                    'src' => $requestCreate[$i]['src'],
+                    'product_id' => $requestCreate[$i]['product_id'],
+                    'status' => 'Shipped',
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
+                    'user_id' => $id,
+                    'price' => $requestCreate[$i]['price'],
                 ]);
             }
-            return redirect()->route('cart')->with('success', 'Successfully Submit');
+            // dd($requestCreate);
+
+            OrderDetails::where('user_id', $id)->where('created_at', $created_at)->update(array(
+                'status' => "Shipped",
+            ));
+            RequestProducts::where('user_id', $id)->where('created_at', $created_at)->update(array(
+                'status' => "Shipped",
+            ));
+
+            return redirect()->route('request')->with('success', 'Successfully Submit');
         }
         return view('auth.login');
     }
@@ -67,8 +90,12 @@ class AdminRequestController extends Controller
             $firstName = $parts[0];
             $clientID = $id;
 
-            $OrderDetails = OrderDetails::where('user_id', $id)->get();
-            return view('request-view', compact('OrderDetails', 'clientID', 'firstName'));
+            $OrderDetails = OrderDetails::where('user_id', $id)
+                ->orderBy('status', 'ASC')
+                ->groupBy('created_at')
+                ->select(DB::raw('count(user_id) as quantity', ), 'name', 'email', 'status', 'user_id', 'created_at')
+                ->get();
+            return view('admin.request-view', compact('OrderDetails', 'clientID', 'firstName'));
         }
         return view('auth.login');
     }
@@ -80,25 +107,49 @@ class AdminRequestController extends Controller
             $parts = explode(' ', $name);
             $firstName = $parts[0];
 
-            return view('transaction', compact('firstName'));
+            $transaction = TransactionRecord::groupBy('user_id')
+                ->where('status', 'Shipped')
+            // ->where('status', 'Delivered')
+                ->select(DB::raw('count(user_id) as quantity'), 'name', 'email', 'status', 'created_at', 'user_id')
+                ->get();
+
+            return view('admin.transaction', compact('transaction', 'firstName'));
         }
         return view('auth.login');
     }
-    public function transactionApprove(Request $request)
+    public function transactionView($id, $created_at)
     {
         if (Auth::check()) {
-            $orderRequest = RequestProducts::where('user_id', $request->clientID)->get();
-            dd($orderRequest);
-            // return redirect()->route('request')->with('success', 'Transaction has been cancel');
+
+            $name = Auth()->user()->name;
+            $parts = explode(' ', $name);
+            $firstName = $parts[0];
+
+            $transaction = TransactionRecord::groupBy('created_at')
+                ->where('status', 'Shipped')
+                ->select(DB::raw('count(user_id) as quantity'),
+                    DB::raw('SUM(price) as price'), 'name', 'email', 'status', 'created_at', 'user_id')
+                ->get();
+
+            return view('admin.transaction-view', compact('transaction', 'firstName'));
         }
         return view('auth.login');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function transactionHistory($id, $created_at)
+    {
+        if (Auth::check()) {
+
+            $name = Auth()->user()->name;
+            $parts = explode(' ', $name);
+            $firstName = $parts[0];
+
+            $transaction = TransactionRecord::where('user_id', $id)->where('created_at', $created_at)
+                ->get();
+
+            return view('admin.transaction-history', compact('transaction', 'firstName'));
+        }
+        return view('auth.login');
+    }
     public function transactionDestroy(Request $request)
     {
         if (Auth::check()) {

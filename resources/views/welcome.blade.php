@@ -99,7 +99,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('order-details') }}">
+                                        <a class="dropdown-item" href="{{ url('my-orders') }}">
                                         My Order
                                         </a>
                                     </li>

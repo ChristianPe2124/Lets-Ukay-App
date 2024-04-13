@@ -20,4 +20,9 @@ class OrderDetails extends Model
         'user_id',
         'product_id',
     ];
+
+    public function Product()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

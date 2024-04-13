@@ -33,7 +33,7 @@ class CartController extends Controller
             $price_summary = Cart::where('user_id', $user->id)->sum('price');
             $cart_order_count = Cart::where('user_id', $user->id)->get();
             $cart_order = Cart::where('user_id', $user->id)->paginate(5);
-            return view('cart', compact('cart_order', 'cart_order_count', 'user', 'firstName', 'price_summary'));
+            return view('user.cart', compact('cart_order', 'cart_order_count', 'user', 'firstName', 'price_summary'));
         }
         return view('auth.login');
     }
@@ -121,7 +121,24 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function orderDetails(Request $request)
+    public function myOrders()
+    {
+        if (Auth::check()) {
+            $user = Auth()->user();
+            $name = Auth()->user()->name;
+            $parts = explode(' ', $name);
+            $firstName = $parts[0];
+
+            $orders = DB::table('order_details')
+                ->select('name', 'status', 'created_at', DB::raw('COUNT(user_id) as quantity'), 'user_id', 'id', DB::raw('SUM(price) as total'))
+                ->where('user_id', Auth::id())
+                ->groupBy('created_at')
+                ->paginate(10);
+            return view('user.orders', compact('orders', 'firstName'));
+        }
+        return view('auth.login');
+    }
+    public function orderDetails($id, $created_at)
     {
         if (Auth::check()) {
             $user = Auth()->user();
@@ -130,13 +147,16 @@ class CartController extends Controller
             $firstName = $parts[0];
 
             //  Get Order Details from DB
-            $price_summary = OrderDetails::where('user_id', $user->id)->sum('price');
-            $status = OrderDetails::where('user_id', $user->id)->get(['status']);
+            $price_summary = OrderDetails::where('user_id', $id)->where('created_at', $created_at)->sum('price');
+            $status = OrderDetails::where('user_id', $id)->where('created_at', $created_at)->get(['status']);
             $delivery_price = $price_summary + 50;
-            $OrderDetails = OrderDetails::where('user_id', $user->id)->groupBy('created_at')->get();
+
+            $OrderDetails = OrderDetails::where('user_id', $id)->where('created_at', $created_at)->get();
             $cart_order = Cart::where('user_id', $user->id)->get();
 
-            return view('order-details', compact('user', 'cart_order', 'OrderDetails', 'firstName', 'price_summary', 'delivery_price', 'status'));
+            return view('user.order-details',
+                compact('user', 'cart_order', 'OrderDetails', 'firstName',
+                    'price_summary', 'delivery_price', 'status'));
         }
         return view('auth.login');
     }

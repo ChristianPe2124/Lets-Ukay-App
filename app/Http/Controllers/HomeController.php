@@ -35,8 +35,10 @@ class HomeController extends Controller
         if (Auth::check()) {
             $is_admin = auth()->user()->is_admin == "1";
             if ($is_admin) {
-                $products = DB::table('products')->get();
-                return view('adminHome', compact('products', 'firstName'));
+                $products = DB::table('products')
+                    ->orderBy('status', 'ASC')
+                    ->get();
+                return view('admin.adminHome', compact('products', 'firstName'));
             }
             $cart_order = Cart::where('user_id', $user->id)->get();
             return view('welcome', compact('cart_order', 'firstName'));
@@ -54,7 +56,7 @@ class HomeController extends Controller
             $is_admin = auth()->user()->is_admin == "1";
             if ($is_admin) {
                 $products = DB::table('products')->get();
-                return view('adminHome', compact('products', 'firstName'));
+                return view('admin.adminHome', compact('products', 'firstName'));
             }
             $cart_order = Cart::where('user_id', $user->id)->get();
             return view('welcome', compact('cart_order', 'firstName'));
@@ -66,7 +68,7 @@ class HomeController extends Controller
         $name = Auth()->user()->name;
         $parts = explode(' ', $name);
         $firstName = $parts[0];
-        $products = DB::table('products')->get();
-        return view('adminHome', compact('products', 'firstName'));
+        $products = DB::table('products')->orderBy('status', 'DESC')->get();
+        return view('admin.adminHome', compact('products', 'firstName'));
     }
 }

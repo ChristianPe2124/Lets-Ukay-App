@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="wrapper-whole bg-images py-5 h-100" style="background-image: url('/images/login-register-bg.jpg');">
+<main class="wrapper-whole bg-images py-5" style="background-image: url('/images/login-register-bg.jpg');">
     <div class="container-login">
         <div class="wrapper">
             <div class="title mb-2">
@@ -41,7 +41,7 @@
             </form>
         </div>
     </div>
-</div>
+</main>
 <div class="float-end mt-1 px-1">
     <h6><span>©</span>Let’s Ukay. All Rights Reserved</h6>
 </div>

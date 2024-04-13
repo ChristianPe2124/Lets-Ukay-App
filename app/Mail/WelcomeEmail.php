@@ -35,9 +35,9 @@ class WelcomeEmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('letsukayukay@gmail.com', 'Lets Ukay'),
+            from: new Address('ukayletsukay@gmail.com', 'Lets Ukay'),
             replyTo: [
-                new Address('contactperson@gmail.com', 'Contact Admin'),
+                new Address('shielape14@gmail.com', 'Contact Admin'),
             ],
             subject: $this->subject,
         );

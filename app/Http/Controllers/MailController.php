@@ -19,7 +19,7 @@ class MailController extends Controller
             $firstName = $parts[0];
 
             $cart_order = Cart::where('user_id', $user->id)->get();
-            return view('sell-view', compact('cart_order', 'firstName'));
+            return view('user.sell-view', compact('cart_order', 'firstName'));
         }
         return view('auth.login');
     }
@@ -54,7 +54,7 @@ class MailController extends Controller
             $firstName = $parts[0];
 
             $cart_order = Cart::where('user_id', $user->id)->get();
-            return view('donate-view', compact('cart_order', 'firstName'));
+            return view('user.donate-view', compact('cart_order', 'firstName'));
         }
         return view('auth.login');
     }

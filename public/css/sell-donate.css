@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Style+Script&display=swap");
+
+/*Header*/
+@media (prefers-reduced-motion: no-preference) {
+    :root {
+        scroll-behavior: smooth;
+    }
+}
+
+.first_Content {
+    font-family: "Poppins";
+
+    & .title_Header {
+        font-size: 55px;
+        margin-left: 10px;
+        text-align: center;
+        margin-top: 110px;
+    }
+
+    & .caption {
+        font-size: 25px;
+        font-weight: 300;
+    }
+
+    & .btn_Email {
+        color: black;
+        font-weight: 300;
+        font-size: 15px;
+        border-radius: 50px;
+        border: 3px solid #f291bf;
+        padding: 5px 20px;
+        cursor: pointer;
+    }
+}
+
+.btn_Email:hover {
+    background-color: #f291bf;
+    color: white;
+}
+
+/*How it works*/
+
+.how_it_works {
+    font-family: "Poppins";
+}
+
+footer {
+    background-color: #f291bf;
+}

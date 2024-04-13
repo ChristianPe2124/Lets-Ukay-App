@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/Auth.css') }}" />
     <link href="{{ asset('css/buyPage.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sell-donate.css') }}" rel="stylesheet">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -93,7 +94,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('order-details') }}">
+                                    <a class="dropdown-item" href="{{ url('my-orders') }}">
                                     My Order
                                     </a>
                                 </li>

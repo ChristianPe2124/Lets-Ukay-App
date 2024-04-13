@@ -15,5 +15,7 @@ class TransactionRecord extends Model
         'src',
         'product_id',
         'status',
+        'user_id',
+        'price',
     ];
 }

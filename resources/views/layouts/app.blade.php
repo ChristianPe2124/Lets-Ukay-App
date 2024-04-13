@@ -25,7 +25,7 @@
     <!-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) -->
 </head>
 <body>
-<div id="" style="background-color:#fff">
+<main id="" style="background-color:#fff">
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-dark">
                     <div class="navbar-brand d-block d-lg-none mt-2" href="#">
@@ -106,7 +106,7 @@
                     </div>
                 </nav>
             </div>
-        </div>
+        </main>
 
 
     <main class="py-4">
