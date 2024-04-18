@@ -13,8 +13,6 @@
         </symbol>
     </svg>
 <!-- SVG -->
-
-
 <br>
 
 <!-- Success & Error Message -->
@@ -30,15 +28,7 @@
     </div>
     @endif
     @if (session('success'))
-        <div class="container" id="messageAlert">
-            <div class="alert alert-success d-flex align-items-center d-flex justify-content-between" role="alert">
-                <div>
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    {{ session('success') }}
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
+      {{ session('success') }}
     @endif
 <!-- Success & Error Message -->
 
@@ -65,86 +55,80 @@
               class="collapse navbar-collapse card d-lg-block mb-5"
               id="slideNavbar"
             >
+            <form action="{{ route('category') }}" method="post">
+              @csrf
               <div class="accordion" id="accordionPanelsStayOpenExample">
+
                 <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingOne">
+                  <h2 class="accordion-header" id="">
                     <button
-                      class="accordion-button text-dark bg-light"
-                      type="button"
-                      data-mdb-toggle="collapse"
-                      data-mdb-target="#panelsStayOpen-collapseOne"
-                      aria-expanded="true"
-                      aria-controls="panelsStayOpen-collapseOne"
-                    >
-                      Related items
+                    class="accordion-button text-dark bg-light"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#headingCategory"
+                    aria-expanded="false"
+                    aria-controls="headingCategory">
+                      Category
                     </button>
+                    <div class="collapse" id="collapseExample">
+                      <div class="card card-body">
+                        Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                      </div>
+                    </div>
                   </h2>
                   <div
-                    id="panelsStayOpen-collapseOne"
-                    class="accordion-collapse collapse show"
-                    aria-labelledby="headingOne"
+                    id="headingCategory"
+                    class="collapse show"
+                    aria-labelledby="headingCategory"
                   >
                     <div class="accordion-body">
-                      <ul class="list-unstyled">
-                        <li><a href="#" class="text-dark">Electronics </a></li>
-                        <li><a href="#" class="text-dark">Home items </a></li>
-                        <li>
-                          <a href="#" class="text-dark">Books, Magazines </a>
-                        </li>
-                        <li>
-                          <a href="#" class="text-dark">Men's clothing </a>
-                        </li>
-                        <li>
-                          <a href="#" class="text-dark">Interiors items </a>
-                        </li>
-                        <li><a href="#" class="text-dark">Underwears </a></li>
-                        <li>
-                          <a href="#" class="text-dark">Shoes for men </a>
-                        </li>
-                        <li><a href="#" class="text-dark">Accessories </a></li>
-                      </ul>
+                    <select class="form-select" name="selectedCategory">
+                      <option selected value="All">Select All</option>
+                      <option value="skirt" >Skirt</option>
+                      <option value="short" >Short</option>
+                      <option value="blouse" >Blouse</option>
+                      <option value="dress" >Dress</option>
+                      <option value="coat" >Coat</option>
+                      <option value="swimwear" >Swimwear</option>
+                      <option value="shirt" >Shirt</option>
+                      <option value="suit">Suit</option>
+                      <option value="formal">Formal</option>
+                      <option value="footwear">Footwear</option>
+                    </select>
                     </div>
                   </div>
                 </div>
 
                 <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingThree">
+                  <h2 class="accordion-header" id="">
                     <button
                       class="accordion-button text-dark bg-light"
                       type="button"
-                      data-mdb-toggle="collapse"
-                      data-mdb-target="#panelsStayOpen-collapseThree"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#pricePanel"
                       aria-expanded="false"
-                      aria-controls="panelsStayOpen-collapseThree"
-                    >
-                      Price
+                      aria-controls="pricePanel">
+                        Price
                     </button>
                   </h2>
                   <div
-                    id="panelsStayOpen-collapseThree"
-                    class="accordion-collapse collapse show"
-                    aria-labelledby="headingThree"
+                    id="pricePanel"
+                    class="collapse show"
+                    aria-labelledby="pricePanel"
                   >
                     <div class="accordion-body">
-                      <div class="range">
-                        <input
-                          type="range"
-                          class="form-range"
-                          id="customRange1"
-                        />
-                      </div>
                       <div class="row mb-3">
                         <div class="col-6">
                           <p class="mb-0">Min</p>
                           <div class="form-outline">
                             <input
                               type="number"
-                              id="typeNumber"
+                              id="minNumber"
                               class="form-control"
+                              min="0"
+                              placeholder="0"
+                              name="minNumber"
                             />
-                            <label class="form-label" for="typeNumber"
-                              >$0</label
-                            >
                           </div>
                         </div>
                         <div class="col-6">
@@ -152,17 +136,17 @@
                           <div class="form-outline">
                             <input
                               type="number"
-                              id="typeNumber"
+                              id="maxNumber"
                               class="form-control"
+                              max="5000"
+                              placeholder="1000"
+                              name="maxNumber"
                             />
-                            <label class="form-label" for="typeNumber"
-                              >$1,0000</label
-                            >
                           </div>
                         </div>
                       </div>
-                      <a
-                        href="#"
+                      <button
+                        type="submit"
                         class="btn btn-white w-100 border border-secondary"
                         data-bs-toggle="collapse"
                         data-bs-target="#slideNavbar"
@@ -171,11 +155,12 @@
                         aria-label="Toggle navigation"
                       >
                         apply
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
+            </form>
             </div>
           </div>
           <!-- content -->
@@ -223,6 +208,9 @@
                         <div class="d-flex flex-row">
                             <h5>Status: {{ ucfirst($item->status) }}</h5>
                         </div>
+                        <div class="d-flex flex-row">
+                            <h5>Status: {{ ucfirst($item->category) }}</h5>
+                        </div>
                         <p class="text mb-4 mb-md-0">
                           {{ $item->product_desc }}
                         </p>
@@ -232,11 +220,11 @@
                           <h4 class="mb-1 me-1">₱{{ $item->price }}</h4>
                           <!-- <span class="text-danger"><s>$49.99</s></span> -->
                         </div>
-                        <h6 class="text-success">Free shipping</h6>
+
                         <div class="mt-4">
                         <form action="{{ route('cart.post', $item->product_id) }}" method="POST">
                         @csrf
-                            <input type="submit" value="Mine" class="btn btn-primary shadow-0">
+                            <input type="submit" value="Mine" class="btn btn-success opacity-75 shadow-0">
 
                             </div>
                         </form>

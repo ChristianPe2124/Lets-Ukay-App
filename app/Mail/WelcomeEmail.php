@@ -15,16 +15,18 @@ class WelcomeEmail extends Mailable
 
     public $mailMessage;
     public $subject;
+    public $header;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($message, $subject)
+    public function __construct($message, $subject, $header)
     {
         $this->mailMessage = $message;
         $this->subject = $subject;
+        $this->header = $header;
     }
 
     /**

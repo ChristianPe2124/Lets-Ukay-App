@@ -6,13 +6,10 @@
     <title>{{ $subject }}</title>
 </head>
 <body>
-    <h4>{{ $subject }}</h4>
+    <h4>Ka-Ukay Order Request</h4>
     <p>{{ $mailMessage }}</p>
-    <p>We will send you an email as soon as your parcel is on its way.</p>
     <br>
-    <p>Thank you for your purchase,</p>
     <br>
-    <p>Regards</p>
-    <h4>{{ ucfirst(trans($sender)) }}</h4>
+    <h4>Customer Email: {{ ucfirst(trans($sender)) }}</h4>
 </body>
 </html>

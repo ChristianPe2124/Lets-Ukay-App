@@ -6,11 +6,11 @@
     <title>{{ $subject }}</title>
 </head>
 <body>
-    <h4>{{ $subject }}</h4>
-    <p>{{ $mailMessage }}</p>
+    <h4>{{ $header }}</h4>
+    <p>{!! $mailMessage !!}</p>
     <br>
     <br>
-    <p>Regards</p>
+    <p>Warm regards,</p>
     <h4>{{ config('app.name') }}</h4>
 </body>
 </html>

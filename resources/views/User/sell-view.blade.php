@@ -158,6 +158,9 @@
             </div>
           </section>
         </section>
-    <!---How it works-->
+        
+        <footer class="py-5">
+      <p class="m-0 text-center text-black">Copyright &copy; Let's Ukay 2024</p>
+    </footer>
 
 @endsection

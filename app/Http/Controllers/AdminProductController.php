@@ -48,9 +48,11 @@ class AdminProductController extends Controller
         $product->save();
 
         if (!$product) {
-            return redirect()->route('admin.home')->with('errors', 'All fields are required');
+            toastr()->error('All fields are required');
+            return redirect()->route('admin.home');
         }
-        return redirect()->route('admin.home')->with('success', 'New item successfully created');
+        toastr()->success('New item successfully created', ['timeOut' => 5000]);
+        return redirect()->route('admin.home');
     }
     /**
      * Show the form for editing the specified resource.
@@ -109,9 +111,11 @@ class AdminProductController extends Controller
         $product->update();
 
         if (!$product) {
-            return redirect()->route('admin.home')->with('errors', 'All fields are required');
+            toastr()->error('All fields are required');
+            return redirect()->route('admin.home');
         }
-        return redirect()->route('admin.home')->with('success', 'Successfully Updated');
+        toastr()->success('Successfully Update', ['timeOut' => 5000]);
+        return redirect()->route('admin.home');
     }
 
     /**
@@ -129,7 +133,9 @@ class AdminProductController extends Controller
         $image_path = public_path('storage/product_image') . '/' . $product->src;
         unlink($image_path);
         $product->delete();
-        return redirect()->route('admin.home')->with('success', "Delete successfully!");
+
+        toastr()->success("Delete successfully!");
+        return redirect()->route('admin.home');
     }
 
     /**

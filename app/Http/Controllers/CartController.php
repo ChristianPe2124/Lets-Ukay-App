@@ -53,6 +53,8 @@ class CartController extends Controller
             // user account details
             $user = auth()->user();
 
+            $order_date = Carbon::now()->format('Ymd') . $product_id . '-' . $user->id;
+
             // product details
             $cart_product = Product::find($product_id);
             // add to cart
@@ -66,18 +68,18 @@ class CartController extends Controller
             $cart->user_id = $user->id;
             $cart->name = $user->name;
             $cart->email = $user->email;
+            $cart->order_date = $order_date;
             $cart->save();
             // update product status
             $status = Product::where('product_id', $product_id)
                 ->update(array(
                     'status' => $cart->status,
                     'buyer_id' => $user->id,
+                    'order_date' => $order_date,
                 ));
-            /*  $product = new Product;
-            $product->status = $status;
-            $product->update(); */
 
-            return redirect()->back()->with('success', 'Successfully added item');
+            toastr()->success('Data has been saved successfully!', ['timeOut' => 3000]);
+            return redirect()->back();
         }
         return view('auth.login');
     }
@@ -102,7 +104,8 @@ class CartController extends Controller
             'status' => "instock",
             'buyer_id' => null,
         ));
-        return redirect()->route('cart')->with('success', 'Delete Successfully');
+        toastr()->success('Delete Successfully', ['timeOut' => 3000]);
+        return redirect()->route('cart');
     }
 
     public function destroyAllSelected(Request $request)
@@ -115,8 +118,9 @@ class CartController extends Controller
             'status' => "instock",
             'buyer_id' => null,
         ));
+
         return response()->json([
-            "success" => "Product have been deleted!",
+            "success" => toastr()->success('Successfully remove on cart?'),
         ]);
     }
     /**
@@ -137,6 +141,7 @@ class CartController extends Controller
                 ->select('name', 'status', 'created_at', DB::raw('COUNT(user_id) as quantity'), 'user_id', 'id', DB::raw('SUM(price) as total'))
                 ->where('user_id', Auth::id())
                 ->groupBy('created_at')
+                ->orderBy('status', 'DESC')
                 ->paginate(10);
             return view('user.Shopping.orders', compact('orders', 'firstName'));
         }
@@ -184,14 +189,16 @@ class CartController extends Controller
             $OrderDetails = OrderDetails::where('user_id', $id)->get();
             $requestProducts = RequestProducts::where('user_id', $id)->get();
 
+            $orderPin = time() . '-' . $cart[0]['user_id'];
+
+            $order_date = $cart->pluck('order_date');
+
             $sender = Auth()->user()->email;
             $toEmail = "shielape14@gmail.com";
-            $message = "Thank you for your purchase! " . ucfirst(trans($firstName)) . ", " . ucfirst(trans($sender)) .
-                " Your order will be shipped within [length of shipping] days";
-            $subject = "Client Order Request";
+            $message = "Your customer  " . ucfirst(trans($firstName)) . " has been purchased. Please check the details on the Admin Dashboard.";
+            $subject = "Let’s Ukay Client Order Request ";
 
             $response = Mail::to($toEmail)->send(new OrderRequest($message, $subject, $sender));
-
             // dd($response);
 
             if (count($cart) === 0) {
@@ -211,6 +218,7 @@ class CartController extends Controller
                         'user_id' => $id,
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now(),
+                        'order_pin' => $orderPin,
                     ]);
                 }
 
@@ -228,19 +236,22 @@ class CartController extends Controller
                         'user_id' => $cart[$i]['user_id'],
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now(),
+                        'order_pin' => $orderPin,
                     ]);
                 }
-
                 // update product status
-                Product::whereIn('buyer_id', [$id])->update(array(
+
+                Product::whereIn('order_date', $order_date)->update(array(
                     'status' => "Processing",
                     'buyer_id' => $id,
+                    'order_pin' => $orderPin,
                 ));
 
                 // Delete each cart after submitting order
                 $cart->each->delete();
 
-                return redirect()->route('cart')->with('success', 'Successfully Ordered!');
+                toastr()->success('Successfully Ordered!', ['timeOut' => 5000]);
+                return redirect()->route('cart');
             }
         }
         return view('auth.login');
@@ -256,22 +267,43 @@ class CartController extends Controller
             $orderDetails = OrderDetails::where('user_id', $id)->where('created_at', $date)->get();
             $transaction = TransactionRecord::where('user_id', $id)->where('created_at', $date)->get();
 
+            $subject = "Ka-Ukay! Your Order Has Been Delivered ";
             $toEmail = Auth()->user()->email;
-            $message = "Hello, " . ucfirst(trans(Auth()->user()->name));
-            $subject = "Order Delivered";
+            $message = "Dear " . ucfirst(trans(Auth()->user()->name)) . ", <br><br>
+            We're excited to inform you that your order has been successfully delivered!
+            We hope you're as thrilled to receive your items as we were to send them to you. <br><br>
+            <strong>Order Details:</strong> <br><br>
+            •	Order Number: [Order Number] <br>
+            •	Shipping Address: [Shipping Address] <br>
+            •	Delivery Date: [Delivery Date] <br><br>
+            <strong>What's Next?</strong> We hope everything arrived in perfect condition and meets your expectations.
+            If you have any questions, or feedback, or need assistance with your order, please don't hesitate to reach
+            our email and contact number [ukayletsukay@gmail.com or +63-xxx-xxx-xxxx].
+            Your satisfaction is our top priority, and we're here to help in any way we can. <br><br>
+            <strong>Share Your Experience</strong>: We would love to hear about your shopping experience with us.
+            Your feedback helps us improve our products and services for future customers. Feel free to leave a review
+            on our email or your favorite review platform. <br><br>
+            Thank you for choosing Let’s Ukay! We appreciate your business and hope to serve you again in the future.
+            "
+            ;
 
             $response = Mail::to($toEmail)->send(new OrderDelivered($message, $subject));
             // dd($response, $toEmail);
+
+            $order_pin = $transaction[0]['order_pin'];
+            $product = Product::where('order_pin', $order_pin)->get();
+            $product->each->delete();
 
             $orderDetails->each->update(array(
                 'status' => "Delivered",
             ));
             $transaction->each->update(array(
                 'status' => "Delivered",
-
             ));
 
-            return redirect()->route('orders')->with('success', 'Successfully Received');
+            toastr()->success('Successfully Received!', 'Congrats', ['timeOut' => 5000]);
+            return redirect()->route('orders');
+
         }
         return view('auth.login');
     }

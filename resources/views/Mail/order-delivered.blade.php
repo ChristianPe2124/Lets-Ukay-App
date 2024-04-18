@@ -6,13 +6,14 @@
     <title>{{ $subject }}</title>
 </head>
 <body>
-    <h3>{{ $mailMessage }}</h3>
-    <p>Your package has been delivered to your preferred safe place.</p>
-    <p>If you want more information or need assistance, check our contact Administrator</p>
-    <p>Thank you for choosing us.</p>
+    <h4>Your Order Has been Delivered</h4>
+    <p>{!! $mailMessage !!}</p>
     <br>
     <br>
-    <p>Regards</p>
+    <p>Best Regards,</p>
+    <p>Shiela Dapilos-Pe</p>
+    <p>Admin</p>
     <h4>{{ config('app.name') }}</h4>
+    <p>+63-xxx-xxx-xxxx</p>
 </body>
 </html>

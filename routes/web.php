@@ -18,10 +18,15 @@ Route::get('/', function () {
 // # All routes
 Auth::routes();
 Auth::routes(['verify' => true]);
+// # My Account
+Route::get('/myAccount', [HomeController::class, 'myAccount'])->name('myAccount');
+Route::post('/myAccount', [HomeController::class, 'editMyAccount'])->name('myAccount.post');
 // # Home, Buy Page
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/buy', [ProductController::class, 'buyPage'])->name('buy');
+
 Route::post('/buy', [ProductController::class, 'category'])->name('category');
+
 // # User Cart
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 Route::post('/cart/{id}', [CartController::class, 'addToCart'])->name('cart.post');
@@ -55,4 +60,4 @@ Route::post('/request-process', [AdminRequestController::class, 'requestCreate']
 Route::get('/transaction', [AdminRequestController::class, 'transaction'])->name('transaction');
 Route::get('/transaction-view/{id}/{created_at}', [AdminRequestController::class, 'transactionView']);
 Route::get('/transaction-history/{id}/{created_at}', [AdminRequestController::class, 'transactionHistory']);
-// Route::post('/transaction/delete', [AdminRequestController::class, 'transactionDestroy'])->name('transaction.cancel');
+Route::post('/transaction', [AdminRequestController::class, 'transactionDestroy'])->name('transaction.cancel');

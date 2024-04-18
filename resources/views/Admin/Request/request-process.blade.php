@@ -25,6 +25,8 @@
                 <th scope="col">Product</th>
                 <th scope="col">Description</th>
                 <th scope="col">Price</th>
+                <th scope="col">Pin</th>
+                <th scope="col">Phone no.</th>
                 <th scope="col">Status</th>
             </tr>
         </thead>
@@ -39,6 +41,8 @@
                 <td>{{ $item->product_name }}</td>
                 <td>{{ $item->product_desc }}</td>
                 <td>{{ $item->price }}</td>
+                <td>{{ $item->order_pin }}</td>
+                <td>(+63) {{ $user->contact_no }}</td>
                 <td>{{ $item->status }}</td>
             </tr>
         @empty
@@ -63,13 +67,13 @@
     </div>
     @else
     <div class="d-flex justify-content-between align-items-center">
-        <form action="" method="POST">
+        <form action="{{ route('transaction.cancel') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger btn-lg">
             <i class="fa-regular fa-trash-can"></i>
                 Cancel
             </button>
-            <input type="hidden" name="created_at" value="{{ $requestProcess[0]['created_at'] }}">
+            <input type="hidden" name="order_pin" value="{{ $requestProcess[0]['order_pin'] }}">
             <input type="hidden" name="user_id" value="{{ $requestProcess[0]['user_id'] }}">
         </form>
         <form action="{{ route('request.post') }}" method="POST">

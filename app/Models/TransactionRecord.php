@@ -18,5 +18,6 @@ class TransactionRecord extends Model
         'user_id',
         'price',
         'created_at',
+        'order_pin',
     ];
 }

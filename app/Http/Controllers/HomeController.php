@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -68,7 +71,63 @@ class HomeController extends Controller
         $name = Auth()->user()->name;
         $parts = explode(' ', $name);
         $firstName = $parts[0];
-        $products = DB::table('products')->orderBy('status', 'DESC')->get();
+        $products = DB::table('products')
+            ->where('status', 'like', "instock")
+            ->orWhere('status', 'like', "outofstock")
+            ->orWhere('status', 'like', "Processing")
+            ->orWhere('status', 'like', "Pending")
+            ->orderBy('buyer_id', 'ASC')
+            ->get();
         return view('admin.adminHome', compact('products', 'firstName'));
+    }
+
+    public function myAccount()
+    {
+        $user = Auth()->user();
+        $name = Auth()->user()->name;
+        $parts = explode(' ', $name);
+        $firstName = $parts[0];
+
+        if (Auth::check()) {
+            return view('User.MyAccount.my_account', compact('firstName'));
+        }
+        return view('auth.login');
+    }
+    public function editMyAccount(Request $request)
+    {
+        $request->validate([
+            'fullname' => 'required',
+            'email' => 'required|email',
+            'phoneNumber' => 'required|max:10',
+            'address' => 'nullable',
+        ]);
+
+        $user = User::findOrFail(Auth()->user()->id);
+
+        if (Hash::check($request->old_password, $user->password)) {
+
+            User::where('id', auth()->user()->id)->update(array(
+                'name' => $request->fullname,
+                'email' => $request->email,
+                'contact_no' => $request->phoneNumber,
+                'address' => $request->address,
+                'password' => Hash::make($request->new_password),
+            ));
+
+            toastr()->success('Account Updated Successfully', 'Congrats', ['timeOut' => 5000]);
+            return redirect()->back();
+
+        } else {
+
+            User::where('id', auth()->user()->id)->update(array(
+                'name' => $request->fullname,
+                'email' => $request->email,
+                'contact_no' => $request->phoneNumber,
+                'address' => $request->address,
+            ));
+
+            toastr()->success('Account Updated Successfully', 'Congrats', ['timeOut' => 5000]);
+            return redirect()->back();
+        }
     }
 }

@@ -108,7 +108,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">My Account</a>
+                                      <a class="dropdown-item" href="{{ route('myAccount') }}">My Account</a>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
@@ -249,33 +249,22 @@
     <!--Sample Items-->
     <section class="card-group">
       <div class="card bg-white text-white">
-        <img src="./images/kids.svg" class="card-img" alt="..." />
+        <img src="{{ asset('images/cardphoto3.png') }}" class="card-img" alt="..." />
         <div class="text-center my-5 card-img-overlay">
-          <h5 class="card-title display-4 fw-normal bg-warning">Card title</h5>
-          <p class="card-text">
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content. This content is a little bit longer.
-          </p>
+          <h5 class="card-title display-4 fw-normal" style="text-shadow: 2px 2px 3px gray;color:white;">KIDS SHOP</h5>
         </div>
       </div>
       <div class="card bg-white text-white">
-        <img src="./images/adultclothes.svg" class="card-img" alt="..." />
-        <div class="card-img-overlay">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content. This content is a little bit longer.
-          </p>
+      <img src="{{ asset('images/cardphoto1.png') }}" class="card-img" alt="..." />
+      <div class="text-center my-5 card-img-overlay">
+          <h5 class="card-title display-4 fw-normal" style="text-shadow: 2px 2px 3px gray;color:white;">WOMEN SHOP</h5>
         </div>
       </div>
       <div class="card bg-white text-white">
-        <img src="./images/shoes.svg" class="card-img" alt="..." />
-        <div class="card-img-overlay">
-          <h5 class="card-title text-center">Card title</h5>
-          <p class="card-text">
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content. This content is a little bit longer.
-          </p>
+      <img src="{{ asset('images/cardphoto2.png') }}" class="card-img" alt="..." />
+      <div class="text-center my-5 card-img-overlay">
+          <h5 class="card-title display-4 fw-normal" style="text-shadow: 2px 2px 3px gray;color:white;">MEN SHOP</h5>
+        </div>
         </div>
       </div>
     </section>

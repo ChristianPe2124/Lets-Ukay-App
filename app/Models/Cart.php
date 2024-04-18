@@ -20,6 +20,7 @@ class Cart extends Model
         'email',
         'src',
         'productID',
+        'order_date',
     ];
     public function request_products()
     {

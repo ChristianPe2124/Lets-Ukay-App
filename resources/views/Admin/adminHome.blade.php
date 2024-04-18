@@ -1,25 +1,6 @@
 @extends('layouts.adminApp')
 
 @section('content')
-<!-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    <h3>Welcome to the Admin Dashboard</h3>
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
 <div class="table-responsive-xl container">
     @if($errors->any())
         <div class="alert alert-success product_error_success_alert" role="alert" id="err_success_alert">
@@ -206,11 +187,11 @@
             <!-- Incase method delete don't work -->
             <input type="hidden" name="_method" value="DELETE">
             <!-- Incase method delete don't work -->
-            <p>Are You Sure ?.. You want to Delete Data</p>
+            <p>Are You Sure ?..</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="modal_hide()" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Yes, Delete Data</button>
+                <button type="submit" class="btn btn-danger">Yes, Delete Data</button>
             </div>
         </form>
         </div>
@@ -236,7 +217,7 @@
         <tbody class="page-data">
             @foreach($products as $item)
             <tr>
-                <td>{{ $item->product_id }}</td>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->product_name }}</td>
                 <td style="text-align: center; object-fit:fill;">
                     <img src="{{ asset('storage/product_image/' .$item->src) }}" loading="lazy" width="70px" height="70px" alt="">

@@ -19,5 +19,7 @@ class Product extends Model
         'status',
         'buyer_id',
         'category',
+        'order_pin',
+        'order_date',
     ];
 }

@@ -22,6 +22,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Status</th>
+                <th scope="col">Phone no.</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@
                 <td>{{ $item->email }}</td>
                 <td>{{ $item->quantity }}</td>
                 <td>{{ $item->status }}</td>
+                <td>(+63) {{ $user->contact_no }}</td>
                 <td class="d-flex justify-content-center align-items-center">
                     <a href=" {{ url('request-process'. '/' . $item->user_id . '/' . $item->created_at  ) }} " class="btn btn-primary">
                         <i class="fa-solid fa-eye"></i>

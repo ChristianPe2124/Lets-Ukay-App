@@ -19,6 +19,7 @@ class OrderDetails extends Model
         'status',
         'user_id',
         'product_id',
+        'order_pin',
     ];
 
     public function Product()

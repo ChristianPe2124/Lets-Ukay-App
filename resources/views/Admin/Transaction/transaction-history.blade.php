@@ -23,6 +23,7 @@
                 <th scope="col">Price</th>
                 <th scope="col">Status</th>
                 <th scope="col">Date</th>
+                <th scope="col">Phone No.</th>
             </tr>
         </thead>
         <tbody class="page-data">
@@ -35,6 +36,7 @@
                     <td>{{ $item->price }}</td>
                     <td>{{ $item->status }}</td>
                     <td>{{ $item->updated_at->format('m/d/y') }}</td>
+                    <td>(+63) {{ $user->contact_no }}</td>
                 </tr>
             @empty
                 <tr">

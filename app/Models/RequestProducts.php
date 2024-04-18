@@ -22,6 +22,7 @@ class RequestProducts extends Model
         'user_id',
         'product_id',
         'status',
+        'order_pin',
     ];
 
     public function carts()

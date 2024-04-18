@@ -103,7 +103,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">My Account</a>
+                                    <a class="dropdown-item" href="{{ route('myAccount') }}">My Account</a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
@@ -136,8 +136,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script type="text/javascript">
-        $('#messageAlert').fadeOut(3000);
-
+        // Delete All
         $(document).ready(function(){
             $('#selectAllIds').click(function () {
                 $('.checkbox_ids').prop('checked', $(this).prop('checked'));
@@ -155,7 +154,7 @@
             if (allIds.length == 0) {
                 alert("Please Select at least one checkbox.");
             } else {
-                var check = confirm("Are you sure you want to delete this?");
+                var check = confirm("Are you sure you want to proceed ?");
                 if(check == true) {
                     var join_selected_values = allIds.join(",");
                     $.ajax({
@@ -168,7 +167,6 @@
                                 $("input:checkbox[name=ids]:checked").each(function() {
                                     $(this).parents('.body').empty();
                                 });
-                                alert(data['success']);
                                 location.reload();
                             } else if (data['error']) {
                                 alert(data['error']);
@@ -187,11 +185,8 @@
                 }
             }
         });
-
+        // Delete All
 
     </script>
-
-
-
 </body>
 </html>

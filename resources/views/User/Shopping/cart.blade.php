@@ -72,22 +72,25 @@
                         <h6 class="mb-0 text-muted">{{ $cart_order_count->count() }} items</h6>
                         @endif
                       </div>
-                      <!-- Delete all button -->
-                      <button class="btn btn-danger col-md-4 col-lg-3 col-xl-3 deleteAllSelectedRecord" data-url="{{ url('DeleteAllSelected') }}" id="deleteAllSelectedRecord">
-                        Delete All Selected
-                      </button> <br><br>
+                    @if($cart_order->count() > 0)
+                    <!-- Remove all button -->
+                    <button class="btn btn-success col-md-4 col-lg-3 col-xl-3 deleteAllSelectedRecord" data-url="{{ url('DeleteAllSelected') }}" id="deleteAllSelectedRecord">
+                      Remove All Selected
+                    </button> <br><br>
 
                     <div class="col-md-3 col-lg-3 col-xl-3">
                         <input class="form-check-input" type="checkbox" name="deleteAll" id="selectAllIds">
                         <label for="">Select All</label>
                     </div>
-                      <!-- Delete all button -->
+                    <!-- Remove all button -->
+                    @else
+                    @endif
                       <hr class="my-4" />
                     <!-- Cart header -->
                     <!-- Cart Body -->
                     @forelse($cart_order as $product)
                     <div class="body">
-                    <!-- Single Delete -->
+                    <!-- Single Remove -->
                     <div class="col-md-1 col-lg-1 col-xl-1">
                         <input class="form-check-input checkbox_ids" type="checkbox" name="ids" value="{{ $product->productID }}" id="allProductIds">
                     </div>
@@ -100,7 +103,7 @@
                             </button>
                         </form>
                      </div>
-                    <!-- Single Delete -->
+                    <!-- Single Remove -->
                       <div class="row mb-4 d-flex justify-content-between align-items-center">
                         <div class="col-md-2 col-lg-2 col-xl-2 text-center">
                           <img
@@ -176,9 +179,9 @@
                       <form action="{{ route('order-details.post') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @if($cart_order_count->count() == 0)
-                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                        <a href="{{ route('buy') }}" type="submit" class="btn btn-primary btn-block btn-lg">
                           Continue Shopping
-                        </button>
+                        </a>
                         @else
                         <button
                           type="submit"

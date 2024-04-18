@@ -85,7 +85,7 @@
     <!---How it works-->
     <section class="container px-5 my-5 how_it_works">
         <h1 class="text-center fw-light title_How">HOW IT WORKS</h1>
-        <p class="text-center fw-light"> We will help to clean out your closet Ka-Ukay!</p>
+        <p class="text-center fw-light"> We're excited to share with you how the donation process works and how your contributions are transforming lives.</p>
         <section>
             <div class="container px-5">
               <div class="row gx-5 align-items-center">
@@ -123,10 +123,9 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="p-5">
-                    <h2 class="display-6 fw-bold">2. Send us your stuff.</h2>
+                    <h2 class="display-6 fw-bold">2. Select your prefer charities. </h2>
                     <p class="fw-light">
-                        Please add your email so we can send our contact details and we can talk together for shipping and prices of your items.
-                        Items that meet our quality standards are photographed, listed and shipped to our fellow ka-Ukay.
+                        Please add your email so we can send our contact details and we can talk together for our donation platform. You can choose the specific charities that views on our website.
                     </p>
                   </div>
                 </div>
@@ -147,9 +146,9 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="p-5">
-                    <h2 class="display-6 fw-bold">3. We do the rest!</h2>
+                    <h2 class="display-6 fw-bold">3. Send us your stuff and We do the rest!</h2>
                     <p class="fw-light">
-                       Now it's ready to sell! We work to ensure your items sell as quickly as possible.
+                       We let you know that your donation will be received by your chosen charities.
                     </p>
                   </div>
                 </div>
@@ -188,4 +187,8 @@
         </div>
       </div>
     </section>
+
+    <footer class="py-5">
+      <p class="m-0 text-center text-black">Copyright &copy; Let's Ukay 2024</p>
+    </footer>
 @endsection
