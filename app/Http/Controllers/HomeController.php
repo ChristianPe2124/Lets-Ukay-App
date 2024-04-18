@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
@@ -119,11 +120,24 @@ class HomeController extends Controller
 
         } else {
 
+            if ($request->hasFile('src')) {
+                $destination = 'storage/profile/' . Auth()->user()->photo;
+                // dd($destination);
+                if (File::exists($destination)) {
+                    File::delete($destination);
+                }
+                $file = $request->file('src');
+                $ext = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $ext;
+                $file->move('storage/profile', $filename);
+            }
+
             User::where('id', auth()->user()->id)->update(array(
                 'name' => $request->fullname,
                 'email' => $request->email,
                 'contact_no' => $request->phoneNumber,
                 'address' => $request->address,
+                'photo' => $filename,
             ));
 
             toastr()->success('Account Updated Successfully', 'Congrats', ['timeOut' => 5000]);

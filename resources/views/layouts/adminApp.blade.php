@@ -163,12 +163,12 @@
         }
         // end modals
         // alert message
-        $('#err_success_alert').fadeOut(3000);
+        /* $('#err_success_alert').fadeOut(3000);
         $(document).ready(function(){
             $("#alert_button").click(function(){
                 $("#err_success_alert").hide(600);
             });
-        });
+        }); */
         // end alert message
     </script>
 </body>

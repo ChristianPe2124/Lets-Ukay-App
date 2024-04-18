@@ -49,12 +49,23 @@ class ProductController extends Controller
                         ->where('status', '=', 'instock')
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
+
+                    $productCount = DB::table('products')->where('status', '=', 'instock')
+                        ->orderBy('created_at', 'desc')
+                    // ->where('category', $category)
+                        ->get();
+
                 } else {
                     $buy_products = DB::table('products')
                         ->where('status', '=', 'instock')
                         ->where('category', $category)
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
+
+                    $productCount = DB::table('products')->where('status', '=', 'instock')
+                        ->orderBy('created_at', 'desc')
+                        ->where('category', $category)
+                        ->get();
                 }
             } elseif (empty($min) || empty($max)) {
                 if ($category == "All") {
@@ -64,6 +75,10 @@ class ProductController extends Controller
                         ->orWhereBetween('price', [$min, "5000"])
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
+
+                    $productCount = DB::table('products')->where('status', '=', 'instock')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
                 } else {
                     $buy_products = DB::table('products')
                         ->where('status', '=', 'instock')
@@ -72,6 +87,10 @@ class ProductController extends Controller
                         ->where('category', $category)
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
+
+                    $productCount = DB::table('products')->where('status', '=', 'instock')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
                 }
             } else {
                 if ($category == "All") {
@@ -80,6 +99,11 @@ class ProductController extends Controller
                         ->whereBetween('price', [$min, $max])
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
+
+                    $productCount = DB::table('products')->where('status', '=', 'instock')
+                        ->orderBy('created_at', 'desc')
+                        ->whereBetween('price', [$min, $max])
+                        ->get();
                 } else {
                     $buy_products = DB::table('products')
                         ->where('status', '=', 'instock')
@@ -87,12 +111,14 @@ class ProductController extends Controller
                         ->whereBetween('price', [$min, $max])
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
+
+                    $productCount = DB::table('products')->where('status', '=', 'instock')
+                        ->orderBy('created_at', 'desc')
+                        ->whereBetween('price', [$min, $max])
+                        ->get();
                 }
             }
 
-            $productCount = DB::table('products')->where('status', '=', 'instock')
-                ->orderBy('created_at', 'desc')
-                ->get();
             $user = Auth()->user();
             $name = Auth()->user()->name;
             $parts = explode(' ', $name);

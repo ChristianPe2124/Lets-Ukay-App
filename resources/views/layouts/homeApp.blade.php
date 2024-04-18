@@ -77,7 +77,7 @@
                             @endif
                         @else
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('home') }}" class="nav-link">
                                 About
                             </a>
                         </li>

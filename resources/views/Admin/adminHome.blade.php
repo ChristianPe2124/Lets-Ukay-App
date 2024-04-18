@@ -217,7 +217,7 @@
         <tbody class="page-data">
             @foreach($products as $item)
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td>{{ $item->product_id }}</td>
                 <td>{{ $item->product_name }}</td>
                 <td style="text-align: center; object-fit:fill;">
                     <img src="{{ asset('storage/product_image/' .$item->src) }}" loading="lazy" width="70px" height="70px" alt="">

@@ -44,7 +44,6 @@ class AdminProductController extends Controller
             $product->src = $filename;
         }
 
-        //dd($product);
         $product->save();
 
         if (!$product) {
